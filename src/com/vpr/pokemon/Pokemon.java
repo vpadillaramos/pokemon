@@ -57,10 +57,10 @@ public class Pokemon implements Serializable{
 	public void setImagen(String imagen) {
 		this.imagen = imagen;
 	}
-	
+	/*
 	public boolean comparaPokemon(Pokemon pk) {
 		if(
 		this.nombre.equals(pk.getNombre())
 		)
-	}
+	}*/
 }

@@ -9,7 +9,10 @@ import java.nio.file.Files;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import java.io.*;
 import com.vpr.pokemon.Pokemon.Tipo;
@@ -41,6 +44,7 @@ public class Controller implements ActionListener, MouseListener{
 	public void addListeners() {
 		view.btAnadir.addActionListener(this);
 		view.lbImagen.addMouseListener(this);
+		view.listPokemones.addMouseListener(this);
 	}
 	
 	public void refrescarLista() {
@@ -133,23 +137,55 @@ public class Controller implements ActionListener, MouseListener{
 			}
 			
 			break;
+			/*
+		case "borrar":
+			ListSelectionListener borrar = new ListSelectionListener() {
+
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					if (!e.getValueIsAdjusting()) {
+						Pokemon pk = view.listPokemones.getSelectedValue();
+					}
+				}
+				
+			};
+			break;*/
+			
 		default:
 			
 			break;
 		}
 	}
-
+	
+	private void modoEdicion(boolean activo) {
+		if(activo) {
+			view.tfNombre.setEditable(true);
+			view.tfNivel.setEditable(true);
+			view.tfPeso.setEditable(true);
+		}
+		else {
+			
+		}
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//creo una ventana para buscar el fichero, es una ventana modal
-		JFileChooser jfc = new JFileChooser();
+		//con esto detecto que el origen del evento clickado es el label de la imagen
+		if(e.getSource() == view.lbImagen) {
+			//creo una ventana para buscar el fichero, es una ventana modal
+			JFileChooser jfc = new JFileChooser();
+			
+			//con el siguiente metodo y esta constante sabremos si el usuario le ha dado a cancelar
+			if(jfc.showOpenDialog(null) == JFileChooser.CANCEL_OPTION)
+				return;
+			
+			ficheroSeleccionado = jfc.getSelectedFile(); //guardo el fichero seleccionado
+			view.lbImagen.setIcon(new ImageIcon(ficheroSeleccionado.getAbsolutePath())); //seteo la imagen al icono de la imagen
+		}
+		else if(e.getSource() == view.listPokemones) {
+			view.lbImagen.setIcon(new ImageIcon());
+		}
 		
-		//con el siguiente metodo y esta constante sabremos si el usuario le ha dado a cancelar
-		if(jfc.showOpenDialog(null) == JFileChooser.CANCEL_OPTION)
-			return;
-		
-		ficheroSeleccionado = jfc.getSelectedFile(); //guardo el fichero seleccionado
-		view.lbImagen.setIcon(new ImageIcon(ficheroSeleccionado.getAbsolutePath())); //seteo la imagen al icono de la imagen
 	}
 	
 	//Otros metodos del MouseListener

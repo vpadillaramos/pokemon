@@ -27,6 +27,7 @@ public class View {
 	public JList<Pokemon> listPokemones; //especifico que la lista es de la clase Pokemon
 	public DefaultListModel<Pokemon> modelPokemones;
 	public JLabel lbImagen;
+	public JButton btBorrar;
 	
 	public View() {
 		frame = new JFrame();	
@@ -69,7 +70,7 @@ public class View {
 		
 		btAnadir = new JButton("A\u00F1adir");
 		btAnadir.setActionCommand("anadir");
-		btAnadir.setBounds(63, 210, 89, 23);
+		btAnadir.setBounds(10, 191, 89, 23);
 		frame.getContentPane().add(btAnadir);
 		
 		cbTipo = new JComboBox<>();
@@ -90,6 +91,11 @@ public class View {
 		lbImagen.setBorder(new TitledBorder(null, "Imagen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		lbImagen.setBounds(191, 30, 60, 64);
 		frame.getContentPane().add(lbImagen);
+		
+		btBorrar = new JButton("Borrar");
+		btBorrar.setActionCommand("borrar");
+		btBorrar.setBounds(10, 225, 89, 23);
+		frame.getContentPane().add(btBorrar);
 		
 		frame.setVisible(true);
 		frame.repaint();
