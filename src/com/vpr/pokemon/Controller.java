@@ -18,7 +18,12 @@ import java.io.*;
 import com.vpr.pokemon.Pokemon.Tipo;
 import com.vpr.pokemon.util.Util;;
 
-public class Controller implements ActionListener, MouseListener{
+public class Controller implements ActionListener, MouseListener, ListSelectionListener{
+	
+	//constantes
+	final String DEFAULT_IMG = "pokeball.png";
+	
+	//atributos
 	private View view;
 	private Model model;
 	private File ficheroSeleccionado;
@@ -30,6 +35,7 @@ public class Controller implements ActionListener, MouseListener{
 		addListeners(); //añado el listener
 		poblarTiposPokemon();
 		refrescarLista();
+		modoEdicion(false);
 		
 	}
 	
@@ -42,9 +48,18 @@ public class Controller implements ActionListener, MouseListener{
 	
 	//escucho que han clickado en el elemento
 	public void addListeners() {
-		view.btAnadir.addActionListener(this);
+		//botones
+		view.btNuevo.addActionListener(this);
+		view.btGuardar.addActionListener(this);
+		view.btEditar.addActionListener(this);
+		view.btCancelar.addActionListener(this);
+		view.btBorrar.addActionListener(this);
+		
+		//pulsar etiqueta imagen
 		view.lbImagen.addMouseListener(this);
-		view.listPokemones.addMouseListener(this);
+		
+		//evento cuando se pulsa en la lista
+		view.listPokemones.addListSelectionListener(this);
 	}
 	
 	public void refrescarLista() {
@@ -58,8 +73,19 @@ public class Controller implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
+		
+		case "nuevo":
+			view.btNuevo.setEnabled(false);
+			modoEdicion(true);
+			break;
+			
+		
 		//click en boton añadir
-		case "anadir":
+		case "editar":
+			
+			
+			break;
+		case "guardar":
 			//si el nombre esta vacio se acaba la accion
 			if(view.tfNombre.getText().equals("")) {
 				//salta una ventana indicando que el nombre es obligatorio
@@ -96,7 +122,7 @@ public class Controller implements ActionListener, MouseListener{
 			if(ficheroSeleccionado != null) //si el fichero seleccionado no es null
 				nombreImagen = ficheroSeleccionado.getName();
 			else
-				nombreImagen = "pokeball.png"; //pongo una imagen por defecto si no selecciona ninguna
+				nombreImagen = DEFAULT_IMG; //pongo una imagen por defecto si no selecciona ninguna
 			
 			String nombre = view.tfNombre.getText();
 			Pokemon pokemon = new Pokemon();
@@ -136,7 +162,15 @@ public class Controller implements ActionListener, MouseListener{
 				JOptionPane.showMessageDialog(null, "Pokemon añadido", "Completo", JOptionPane.INFORMATION_MESSAGE);
 			}
 			
+			//limpio todo y pongo el modo edicion false
+			limpiarTexto();
+			modoEdicion(false);
+			
 			break;
+		case "cancelar":
+			
+			break;
+			
 			/*
 		case "borrar":
 			ListSelectionListener borrar = new ListSelectionListener() {
@@ -158,14 +192,51 @@ public class Controller implements ActionListener, MouseListener{
 	}
 	
 	private void modoEdicion(boolean activo) {
+			view.tfNombre.setEditable(!view.tfNombre.isEditable());
+			view.tfNivel.setEditable(!view.tfNivel.isEditable());
+			view.tfPeso.setEditable(!view.tfPeso.isEditable());
 		if(activo) {
-			view.tfNombre.setEditable(true);
-			view.tfNivel.setEditable(true);
-			view.tfPeso.setEditable(true);
+			view.btNuevo.setEnabled(!activo);
+			view.btEditar.setEnabled(!activo);
+			view.btGuardar.setEnabled(activo);
+			view.btCancelar.setEnabled(activo);
+			view.btBorrar.setEnabled(!activo);
+			view.listPokemones.setEnabled(!activo);
 		}
 		else {
-			
+			view.btNuevo.setEnabled(!activo);
+			view.btEditar.setEnabled(activo);
+			view.btGuardar.setEnabled(activo);
+			view.btCancelar.setEnabled(activo);
+			view.btBorrar.setEnabled(activo);
+			view.listPokemones.setEnabled(!activo);
 		}
+	}
+	
+	
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		/*Pokemon pk = view.modelPokemones.get(e.getLastIndex());
+		view.lbImagen.setIcon(new ImageIcon(pk.getImagen()));
+		view.tfNombre.setText(pk.getNombre());*/
+		
+		if(!e.getValueIsAdjusting()) {
+			view.tfNombre.setText(view.listPokemones.getSelectedValue().getNombre());
+			view.cbTipo.setSelectedItem(view.listPokemones.getSelectedValue().getTipo());
+			view.tfNivel.setText(String.valueOf(view.listPokemones.getSelectedValue().getNivel()));
+			view.tfPeso.setText(String.valueOf(view.listPokemones.getSelectedValue().getPeso()));
+			//view.lbImagen.setIcon(new ImageIcon(view.listPokemones.getSelectedValue().getImagen()));
+			//view.lbImagen.setIcon(new ImageIcon("C:\\Users\\AlumnoT\\Desktop\\pokemon-icon\\011.png"));
+		}
+	}
+	
+	//metodo que limpia los text field 
+	public void limpiarTexto() {
+		view.tfNombre.setText("");
+		view.cbTipo.setSelectedIndex(0);
+		view.lbImagen.setIcon(new ImageIcon(DEFAULT_IMG));
+		view.tfNivel.setText("");
+		view.tfPeso.setText("");
 	}
 	
 	@Override
@@ -183,10 +254,11 @@ public class Controller implements ActionListener, MouseListener{
 			view.lbImagen.setIcon(new ImageIcon(ficheroSeleccionado.getAbsolutePath())); //seteo la imagen al icono de la imagen
 		}
 		else if(e.getSource() == view.listPokemones) {
-			view.lbImagen.setIcon(new ImageIcon());
+			view.lbImagen.setIcon(new ImageIcon(DEFAULT_IMG));
 		}
 		
 	}
+	
 	
 	//Otros metodos del MouseListener
 	@Override
@@ -207,4 +279,6 @@ public class Controller implements ActionListener, MouseListener{
 	@Override
 	public void mouseReleased(MouseEvent e) {
 	}
+
+	
 }

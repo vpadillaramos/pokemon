@@ -22,12 +22,15 @@ public class View {
 	public JTextField tfNivel;
 	public JTextField tfPeso;
 	public JComboBox<Pokemon.Tipo> cbTipo;
-	public JButton btAnadir;
+	public JButton btEditar;
 	public JScrollPane scrollPane;
 	public JList<Pokemon> listPokemones; //especifico que la lista es de la clase Pokemon
 	public DefaultListModel<Pokemon> modelPokemones;
 	public JLabel lbImagen;
 	public JButton btBorrar;
+	public JButton btNuevo;
+	public JButton btGuardar;
+	public JButton btCancelar;
 	
 	public View() {
 		frame = new JFrame();	
@@ -42,15 +45,15 @@ public class View {
 		frame.getContentPane().add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("Tipo");
-		lblNewLabel_1.setBounds(10, 72, 46, 14);
+		lblNewLabel_1.setBounds(10, 61, 46, 14);
 		frame.getContentPane().add(lblNewLabel_1);
 		
 		JLabel lblNewLabel_2 = new JLabel("Nivel");
-		lblNewLabel_2.setBounds(10, 116, 46, 14);
+		lblNewLabel_2.setBounds(10, 92, 46, 14);
 		frame.getContentPane().add(lblNewLabel_2);
 		
 		JLabel lblNewLabel_3 = new JLabel("Peso");
-		lblNewLabel_3.setBounds(10, 163, 46, 14);
+		lblNewLabel_3.setBounds(10, 117, 46, 14);
 		frame.getContentPane().add(lblNewLabel_3);
 		
 		tfNombre = new JTextField();
@@ -59,22 +62,22 @@ public class View {
 		tfNombre.setColumns(10);
 		
 		tfNivel = new JTextField();
-		tfNivel.setBounds(66, 113, 86, 20);
+		tfNivel.setBounds(66, 89, 86, 20);
 		frame.getContentPane().add(tfNivel);
 		tfNivel.setColumns(10);
 		
 		tfPeso = new JTextField();
-		tfPeso.setBounds(66, 160, 86, 20);
+		tfPeso.setBounds(66, 114, 86, 20);
 		frame.getContentPane().add(tfPeso);
 		tfPeso.setColumns(10);
 		
-		btAnadir = new JButton("A\u00F1adir");
-		btAnadir.setActionCommand("anadir");
-		btAnadir.setBounds(10, 191, 89, 23);
-		frame.getContentPane().add(btAnadir);
+		btEditar = new JButton("Editar");
+		btEditar.setActionCommand("editar");
+		btEditar.setBounds(139, 168, 89, 23);
+		frame.getContentPane().add(btEditar);
 		
 		cbTipo = new JComboBox<>();
-		cbTipo.setBounds(66, 69, 86, 20);
+		cbTipo.setBounds(66, 58, 86, 20);
 		frame.getContentPane().add(cbTipo);
 		
 		scrollPane = new JScrollPane();
@@ -94,8 +97,23 @@ public class View {
 		
 		btBorrar = new JButton("Borrar");
 		btBorrar.setActionCommand("borrar");
-		btBorrar.setBounds(10, 225, 89, 23);
+		btBorrar.setBounds(335, 191, 89, 23);
 		frame.getContentPane().add(btBorrar);
+		
+		btNuevo = new JButton("Nuevo");
+		btNuevo.setActionCommand("nuevo");
+		btNuevo.setBounds(24, 168, 89, 23);
+		frame.getContentPane().add(btNuevo);
+		
+		btGuardar = new JButton("Guardar");
+		btGuardar.setActionCommand("guardar");
+		btGuardar.setBounds(24, 215, 89, 23);
+		frame.getContentPane().add(btGuardar);
+		
+		btCancelar = new JButton("Cancelar");
+		btCancelar.setActionCommand("cancelar");
+		btCancelar.setBounds(139, 215, 89, 23);
+		frame.getContentPane().add(btCancelar);
 		
 		frame.setVisible(true);
 		frame.repaint();
