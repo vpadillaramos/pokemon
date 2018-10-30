@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import javax.swing.ImageIcon;
@@ -21,7 +20,7 @@ import com.vpr.pokemon.util.Util;;
 public class Controller implements ActionListener, MouseListener, ListSelectionListener{
 	
 	//constantes
-	final String DEFAULT_IMG = "pokeball.png";
+	final String DEFAULT_IMG = System.getProperty("user.dir") + File.separator + "icons" + File.separator + "pokeball.png";
 	
 	//atributos
 	private View view;
@@ -76,13 +75,13 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 		
 		case "nuevo":
 			view.btNuevo.setEnabled(false);
+			limpiarTexto();
 			modoEdicion(true);
 			break;
 			
 		
 		//click en boton añadir
 		case "editar":
-			
 			
 			break;
 		case "guardar":
@@ -112,11 +111,6 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 				return;
 			}
 				
-			
-			Tipo tipo = (Tipo) view.cbTipo.getSelectedItem();
-			int nivel = Integer.parseInt(view.tfNivel.getText());
-			float peso = Float.parseFloat(view.tfPeso.getText());
-			
 			//almacen el nombre de la imagen
 			String nombreImagen;
 			if(ficheroSeleccionado != null) //si el fichero seleccionado no es null
@@ -125,6 +119,10 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 				nombreImagen = DEFAULT_IMG; //pongo una imagen por defecto si no selecciona ninguna
 			
 			String nombre = view.tfNombre.getText();
+			Tipo tipo = (Tipo) view.cbTipo.getSelectedItem();
+			int nivel = Integer.parseInt(view.tfNivel.getText());
+			float peso = Float.parseFloat(view.tfPeso.getText());
+			
 			Pokemon pokemon = new Pokemon();
 			pokemon.setNombre(nombre);
 			pokemon.setTipo(tipo);
@@ -168,7 +166,7 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 			
 			break;
 		case "cancelar":
-			
+			modoEdicion(false);
 			break;
 			
 			/*
@@ -216,17 +214,12 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		/*Pokemon pk = view.modelPokemones.get(e.getLastIndex());
-		view.lbImagen.setIcon(new ImageIcon(pk.getImagen()));
-		view.tfNombre.setText(pk.getNombre());*/
-		
 		if(!e.getValueIsAdjusting()) {
 			view.tfNombre.setText(view.listPokemones.getSelectedValue().getNombre());
 			view.cbTipo.setSelectedItem(view.listPokemones.getSelectedValue().getTipo());
 			view.tfNivel.setText(String.valueOf(view.listPokemones.getSelectedValue().getNivel()));
 			view.tfPeso.setText(String.valueOf(view.listPokemones.getSelectedValue().getPeso()));
-			//view.lbImagen.setIcon(new ImageIcon(view.listPokemones.getSelectedValue().getImagen()));
-			//view.lbImagen.setIcon(new ImageIcon("C:\\Users\\AlumnoT\\Desktop\\pokemon-icon\\011.png"));
+			view.lbImagen.setIcon(new ImageIcon(System.getProperty("user.dir") + File.separator + "icons" + File.separator + view.listPokemones.getSelectedValue().getImagen()));
 		}
 	}
 	
@@ -253,10 +246,6 @@ public class Controller implements ActionListener, MouseListener, ListSelectionL
 			ficheroSeleccionado = jfc.getSelectedFile(); //guardo el fichero seleccionado
 			view.lbImagen.setIcon(new ImageIcon(ficheroSeleccionado.getAbsolutePath())); //seteo la imagen al icono de la imagen
 		}
-		else if(e.getSource() == view.listPokemones) {
-			view.lbImagen.setIcon(new ImageIcon(DEFAULT_IMG));
-		}
-		
 	}
 	
 	
